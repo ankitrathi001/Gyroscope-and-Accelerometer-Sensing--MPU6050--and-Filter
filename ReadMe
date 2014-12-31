@@ -1,0 +1,62 @@
+Files present in the folder:
+1) main_4.c
+2) KalmanX.c
+3) KalmanY.c
+4) Kalman.h
+5) MPU6050.h
+6) declarations.h
+
+main_4.c
+==================
+This is the main user application program. It contains all the main functionalities and logic and required for the operation of aerail vehicle of UNITY.
+User has option to select the orientation of the aerial vehicle either by using integration method or by Kalman filter. For that
+the user needs to input using a mouse.
+Left click --> Integrate angular velocities that are sampled from gyroscope sensor.
+Right Click --> Use a Kalman filter with both accelerometer data and gyroscope data.
+
+The data is read from registers when interrupt ready signals arrives.
+
+KalmanX.c & KalmanY.c
+==================
+These file implement a Kalman filter. KalmanX.c and KalmanY.c files are two different file two avoid the confusion among variables used. The two sensors Accelerometer data and Gyrometer data are fused via a two state Kalman filter, with one state being the angle and the other state being the gyro bias.
+
+Kalman.h
+===================
+This is Kalman header file to introduce the Kamlan functions to the main_4.c. It is included in main_4.c, which inturn call the respective functions of Kalman for X and Y seperately.
+
+MPU6050.h
+===================
+This header file is used for creating #defines for registers of MPU6050.
+
+declarations.h
+===================
+This file is used to declare all the variables used during development of the code.
+
+Steps to execute
+===================
+1) In the terminal, navigate to the path where source files have been placed.
+2) Please make sure there are two other c files in the folder, so there names are included while making the oject file.
+3) Create the main_4.o object file, by using the "$CC -o main_4.o main_4.c KalmanX.c KalmanY.c -lpthread -lm".
+4) Run "./main_4.o", to test the control of aerail vehicle.
+
+
+Points to Note
+==================
+1) AD0 pin should be connected to GND.
+2) IP Address of the UNITY can be changed in main_4.c to desired IP address.
+3) INT of MPU6050 is connected to IO3.
+4) Please use the first version of the TCPControl.exe.
+
+Optimization
+=================
+when the code was optimized, the maximum sampling rate that could be achieved was around 300Hz.
+That is 300 Samples per second.
+Calculation:
+The time deltaT obatined during the execution of the code is approximately = 
+
+deltaT = 3.2mS
+f = 1 / T = 1 / 3.2mS = 312.5 Hz
+
+As the sampling frequency is increased more and more, the data starts to gets congested,
+meaning the processing time required for code to execute takes time even if the interrupt data ready signal has arrived.
+
